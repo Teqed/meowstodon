@@ -130,6 +130,7 @@
   "settings.show_content_type_choice": "Show content-type choice when authoring toots",
   "settings.show_published_toast": "Display toast when publishing/saving a post",
   "settings.show_reply_counter": "Display an estimate of the reply count",
+  "settings.zoom_emojis_on_hover": "Zoom in on emojis when hovering over them",
   "settings.side_arm": "Secondary toot button:",
   "settings.side_arm.none": "None",
   "settings.side_arm_reply_mode": "When replying to a toot, the secondary toot button should:",
