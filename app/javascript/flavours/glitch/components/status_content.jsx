@@ -332,6 +332,37 @@ class StatusContent extends React.PureComponent {
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
     });
 
+    let quote = '';
+
+    if (status.get('quote', null) !== null) {
+      let quoteStatus = status.get('quote');
+      let quoteStatusContent = { __html: quoteStatus.get('contentHtml') };
+      let quoteStatusAccount = quoteStatus.get('account');
+      let quoteStatusDisplayName = { __html: quoteStatusAccount.get('display_name_html') };
+
+      quote = (
+        <div class='status__quote'>
+          <blockquote>
+            <bdi>
+              <span class='quote-display-name'>
+                <Icon
+                  fixedWidth
+                  id='quote-right'
+                  aria-hidden='true'
+                  key='icon-quote-right'
+                />
+                <strong
+                  class='display-name__html'
+                  dangerouslySetInnerHTML={quoteStatusDisplayName}
+                />
+              </span>
+            </bdi>
+            <div dangerouslySetInnerHTML={quoteStatusContent} />
+          </blockquote>
+        </div>
+      );
+    }
+
     const translateButton = renderTranslate && (
       <TranslateButton onClick={this.handleTranslate} translation={status.get('translation')} />
     );
@@ -401,6 +432,7 @@ class StatusContent extends React.PureComponent {
           {mentionsPlaceholder}
 
           <div className={`status__content__spoiler ${!hidden ? 'status__content__spoiler--visible' : ''}`}>
+            {quote}
             <div
               ref={this.setContentsRef}
               key={`contents-${tagLinks}`}
@@ -426,6 +458,7 @@ class StatusContent extends React.PureComponent {
           onMouseUp={this.handleMouseUp}
           tabIndex={0}
         >
+          {quote}
           <div
             ref={this.setContentsRef}
             key={`contents-${tagLinks}-${rewriteMentions}`}
@@ -447,6 +480,7 @@ class StatusContent extends React.PureComponent {
           className='status__content'
           tabIndex={0}
         >
+          {quote}
           <div
             ref={this.setContentsRef}
             key={`contents-${tagLinks}`}

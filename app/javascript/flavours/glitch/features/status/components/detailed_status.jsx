@@ -126,7 +126,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
   render () {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
-    const { expanded, onToggleHidden, settings, pictureInPicture, intl } = this.props;
+    const { expanded, onToggleHidden, settings, pictureInPicture } = this.props;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
 
@@ -225,7 +225,7 @@ class DetailedStatus extends ImmutablePureComponent {
         );
         mediaIcons.push('picture-o');
       }
-    } else if (status.get('card')) {
+    } else if (!status.get('quote') && status.get('card')) {
       media.push(<Card sensitive={status.get('sensitive')} onOpenMedia={this.props.onOpenMedia} card={status.get('card')} />);
       mediaIcons.push('link');
     }

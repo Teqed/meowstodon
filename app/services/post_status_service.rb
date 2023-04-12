@@ -30,6 +30,7 @@ class PostStatusService < BaseService
   # @option [Doorkeeper::Application] :application
   # @option [String] :idempotency Optional idempotency key
   # @option [Boolean] :with_rate_limit
+  # @option [String] :quote_id
   # @option [Enumerable] :allowed_mentions Optional array of expected mentioned account IDs, raises `UnexpectedMentionsError` if unexpected accounts end up in mentions
   # @return [Status]
   def call(account, options = {})
@@ -211,6 +212,7 @@ class PostStatusService < BaseService
       application: @options[:application],
       content_type: @options[:content_type] || @account.user&.setting_default_content_type,
       rate_limit: @options[:with_rate_limit],
+      quote_id: @options[:quote_id],
     }.compact
   end
 

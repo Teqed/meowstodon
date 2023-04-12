@@ -70,6 +70,7 @@ class Status extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
     account: ImmutablePropTypes.map,
     onReply: PropTypes.func,
+    onQuote: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
     onBookmark: PropTypes.func,
@@ -280,6 +281,7 @@ class Status extends ImmutablePureComponent {
 
   //  Hack to fix timeline jumps on second rendering when auto-collapsing
   //  or on subsequent rendering when a preview card has been fetched
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getSnapshotBeforeUpdate (prevProps, prevState) {
     if (!this.props.getScrollPosition) return null;
 
@@ -459,7 +461,7 @@ class Status extends ImmutablePureComponent {
     this.props.onMoveDown(this.props.containerId || this.props.id, e.target.getAttribute('data-featured'));
   };
 
-  handleHotkeyCollapse = e => {
+  handleHotkeyCollapse = () => {
     if (!this.props.settings.getIn(['collapsed', 'enabled']))
       return;
 
@@ -503,7 +505,6 @@ class Status extends ImmutablePureComponent {
     const {
       handleRef,
       parseClick,
-      setExpansion,
       setCollapsed,
     } = this;
     const { router } = this.context;
@@ -524,7 +525,7 @@ class Status extends ImmutablePureComponent {
       pictureInPicture,
       ...other
     } = this.props;
-    const { isCollapsed, forceFilter } = this.state;
+    const { isCollapsed } = this.state;
     let background = null;
     let attachments = null;
 
@@ -705,7 +706,7 @@ class Status extends ImmutablePureComponent {
       if (!status.get('sensitive') && !(status.get('spoiler_text').length > 0) && settings.getIn(['collapsed', 'backgrounds', 'preview_images'])) {
         background = attachments.getIn([0, 'preview_url']);
       }
-    } else if (status.get('card') && settings.get('inline_preview_cards') && !this.props.muted) {
+    } else if (!status.get('quote') && status.get('card') && settings.get('inline_preview_cards') && !this.props.muted) {
       media.push(
         <Card
           onOpenMedia={this.handleOpenMedia}
