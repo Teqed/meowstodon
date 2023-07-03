@@ -21,11 +21,11 @@ module Mastodon
     end
 
     def suffix
-      "+glitch+cat#{suffix_version}#{ENV.fetch('MASTODON_VERSION_SUFFIX', '')}"
+      "+glitch+cat+meow#{suffix_version}#{ENV.fetch('MASTODON_VERSION_SUFFIX', '')}"
     end
 
     def suffix_version
-      '+1.1.4'
+      '+1.1.4.1'
     end
 
     def to_a
@@ -37,7 +37,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'CatCatNya/catstodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'Teqed/meowstodon')
     end
 
     def source_base_url

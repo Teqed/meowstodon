@@ -1,4 +1,4 @@
-#  Contributing to Catstodon #
+#  Contributing to Meowstodon #
 
 Thank you for your interest in contributing to a fork of the `glitch-soc` project!
 Before you do anything here, please check if you can contribute to either the [vanilla Mastodon project](https://github.com/mastodon/mastodon) or [glitch-soc](https://github.com/glitch-soc/mastodon) first.

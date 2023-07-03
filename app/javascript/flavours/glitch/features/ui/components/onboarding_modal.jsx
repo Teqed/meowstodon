@@ -144,10 +144,12 @@ const PageSix = ({ admin, domain }) => {
       <p>
         <FormattedMessage
           id='onboarding.page_six.github'
-          defaultMessage='{domain} runs on Catstodon, which is a {fork} of {glitchsoc}, which, in turn, is a friendly {fork} of {Mastodon}. It is fully compatible with all Mastodon apps and instances. Catstodon is free open-source software. You can report bugs, request features, or contribute to the code on {github}.'
+          defaultMessage='{domain} runs on {Meowstodon}, which is a {fork} of {Catstodon}, which is a {fork} of {glitchsoc}, which, in turn, is a friendly {fork} of {Mastodon}. It is fully compatible with all Mastodon apps and instances. Catstodon is free open-source software. You can report bugs, request features, or contribute to the code on {github}.'
           values={{
             domain,
+            Meowstodon: <a href='https://github.com/Teqed/meowstodon' target='_blank' rel='noopener'>Meowstodon</a>,
             fork: <a href='https://en.wikipedia.org/wiki/Fork_(software_development)' target='_blank' rel='noopener'>fork</a>,
+            Catstodon: <a href='https://github.com/CatCatNya/catstodon' target='_blank' rel='noopener'>Catstodon</a>,
             glitchsoc: <a href='https://github.com/glitch-soc/mastodon' target='_blank' rel='noopener'>Glitchsoc</a>,
             Mastodon: <a href='https://github.com/mastodon/mastodon' target='_blank' rel='noopener'>Mastodon</a>,
             github: <a href={source_url} target='_blank' rel='noopener'>GitHub</a>,

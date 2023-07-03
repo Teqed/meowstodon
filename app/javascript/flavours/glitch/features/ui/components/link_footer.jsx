@@ -81,7 +81,7 @@ class LinkFooter extends React.PureComponent {
         </p>
 
         <p>
-          <strong>Catstodon</strong>:
+          <strong>Meowstodon</strong>:
           {' '}
           <a href={source_url} rel='noopener noreferrer' target='_blank'><FormattedMessage id='footer.about' defaultMessage='About' /></a>
           {DividingCircle}
