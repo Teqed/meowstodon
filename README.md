@@ -1,4 +1,4 @@
-# Catstodon
+# Meowstodon
 
 ## Introduction
 

@@ -24,12 +24,12 @@ module Mastodon
       ENV['MASTODON_VERSION_PRERELEASE'].presence || default_prerelease
     end
 
-    def catstodon_revision
-      '1.0.0+nightly'
+    def meowstodon_revision
+      '1.0.0.1+nightly'
     end
 
     def build_metadata
-      ["cat.#{catstodon_revision}", ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
+      ["glitch.cat.meow.#{meowstodon_revision}", ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
     end
 
     def to_a
@@ -48,7 +48,7 @@ module Mastodon
     end
 
     def repository
-      ENV.fetch('GITHUB_REPOSITORY', 'CatCatNya/catstodon')
+      ENV.fetch('GITHUB_REPOSITORY', 'Teqed/meowstodon')
     end
 
     def source_base_url
