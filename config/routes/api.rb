@@ -87,6 +87,7 @@ namespace :api, format: false do
     resources :conversations, only: [:index, :destroy] do
       member do
         post :read
+        post :unread
       end
     end
 
@@ -115,6 +116,7 @@ namespace :api, format: false do
 
     namespace :emails do
       resources :confirmations, only: [:create]
+      get :check_confirmation, to: 'confirmations#check'
     end
 
     resource :instance, only: [:show] do

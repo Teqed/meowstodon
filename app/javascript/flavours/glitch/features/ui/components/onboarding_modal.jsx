@@ -1,16 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import { PureComponent } from 'react';
+
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ReactSwipeableViews from 'react-swipeable-views';
+
 import classNames from 'classnames';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
+
+import ReactSwipeableViews from 'react-swipeable-views';
+
 import Permalink from 'flavours/glitch/components/permalink';
 import ComposeForm from 'flavours/glitch/features/compose/components/compose_form';
 import DrawerAccount from 'flavours/glitch/features/compose/components/navigation_bar';
 import Search from 'flavours/glitch/features/compose/components/search';
-import ColumnHeader from './column_header';
 import { me, source_url } from 'flavours/glitch/initial_state';
+
+import ColumnHeader from './column_header';
 
 const noop = () => { };
 
@@ -173,7 +179,7 @@ const mapStateToProps = state => ({
   domain: state.getIn(['meta', 'domain']),
 });
 
-class OnboardingModal extends React.PureComponent {
+class OnboardingModal extends PureComponent {
 
   static propTypes = {
     onClose: PropTypes.func.isRequired,
@@ -187,7 +193,7 @@ class OnboardingModal extends React.PureComponent {
     currentIndex: 0,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { myAccount, admin, domain, intl } = this.props;
     this.pages = [
       <PageOne key='1' acct={myAccount.get('acct')} domain={domain} />,
