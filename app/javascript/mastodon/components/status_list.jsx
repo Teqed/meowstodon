@@ -38,6 +38,7 @@ export default class StatusList extends ImmutablePureComponent {
 
   static defaultProps = {
     trackScroll: true,
+    withCounters: true,
   };
 
   getFeaturedStatusCount = () => {
