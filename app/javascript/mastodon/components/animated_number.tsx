@@ -36,7 +36,7 @@ export const AnimatedNumber: React.FC<Props> = ({ value, obfuscate }) => {
   );
 
   if (reduceMotion) {
-    return obfuscate ? (
+    return (obfuscate === true) ? (
       <>{obfuscatedCount(value)}</>
     ) : (
       <ShortNumber value={value} />
@@ -67,7 +67,7 @@ export const AnimatedNumber: React.FC<Props> = ({ value, obfuscate }) => {
                 transform: `translateY(${style.y * 100}%)`,
               }}
             >
-              {obfuscate ? (
+              {(obfuscate === true) ? (
                 obfuscatedCount(data as number)
               ) : (
                 <ShortNumber value={data as number} />

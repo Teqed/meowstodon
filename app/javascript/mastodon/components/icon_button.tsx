@@ -131,7 +131,7 @@ export class IconButton extends PureComponent<Props, States> {
         <Icon id={icon} fixedWidth aria-hidden='true' />{' '}
         {typeof counter !== 'undefined' && (
           <span className='icon-button__counter'>
-            <AnimatedNumber value={counter} obfuscate={obfuscateCount} />
+            <AnimatedNumber value={counter} obfuscate={obfuscateCount === true} />
           </span>
         )}
       </>
