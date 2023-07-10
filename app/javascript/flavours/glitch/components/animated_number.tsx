@@ -10,10 +10,10 @@ import ShortNumber from './short_number';
 const obfuscatedCount = (count: number) => {
   if (count < 0) {
     return 0;
-  } else if (count <= 1) {
-    return count;
   } else {
-    return '1+';
+    return (
+      <ShortNumber value={count} />
+    );
   }
 };
 
