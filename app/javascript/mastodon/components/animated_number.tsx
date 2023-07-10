@@ -6,6 +6,16 @@ import { reduceMotion } from '../initial_state';
 
 import { ShortNumber } from './short_number';
 
+const obfuscatedCount = (count: number) => {
+  if (count < 0) {
+    return 0;
+  } else {
+    return (
+      <ShortNumber value={count} />
+    );
+  }
+};
+
 interface Props {
   value: number;
 }
