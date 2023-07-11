@@ -59,7 +59,7 @@ class Trends::Statuses < Trends::Base
 
   def refresh(at_time = Time.now.utc)
     # statuses = Status.where(id: (recently_used_ids(at_time) + StatusTrend.pluck(:status_id)).uniq).includes(:status_stat, :account)
-    statuses = Status.order(created_at: :desc).limit(1000).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3)
+    statuses = Status.where('statuses.created_at >= ?', last_week).order(created_at: :desc).limit(10000).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3)
     calculate_scores(statuses, at_time)
   end
 
