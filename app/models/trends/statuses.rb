@@ -126,6 +126,12 @@ class Trends::Statuses < Trends::Base
                          score * (0.5**((at_time.to_f - status.created_at.to_f) / options[:score_halflife].to_f))
                        end
 
+      # Print out relevant information for debugging
+      puts "Status: #{status.inspect}"
+      puts "Expected: #{expected}"
+      puts "Observed: #{observed}"
+      puts "Score: #{score}"
+      puts "Decaying Score: #{decaying_score}"
       [decaying_score, status]
     end
 
