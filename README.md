@@ -60,6 +60,7 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 ## Meowstodon - Differences from Catstodon
 
 - Emojis enlarge on hover (thanks to [@neatchee's glitch-soc fork](https://github.com/neatchee/mastodon/tree/feat/enlarge_emoji_on_mouseover_option))
+- Expose more lines of text for collapsed posts (also from a [@neatchee fork](https://github.com/neatchee/mastodon/tree/feat/collapsed_post_visibility_improvements))
 - Counters in the web interface [have been modified](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/helpers/home_helper.rb) to display `count` or `ShortNumber` instead of `1+`.
 - The queries for trending statuses [have been changed](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/models/trends/statuses.rb) -- instead of using `recently_used_ids()` a selection of recent statuses from the last week are chosen.
 - When [calculating scores](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/models/trends/statuses.rb) for trends, set `allowed = true` for eligible statuses.
