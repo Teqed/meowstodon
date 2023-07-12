@@ -9,21 +9,21 @@ To install, take a look at [glitch-soc.github.io/docs/](https://glitch-soc.githu
 ## glitch-soc - Differences from mastodon/mastodon
 The following is an excerpt from [glitch-soc's documentation](https://glitch-soc.github.io/docs/):
 
-- Media improvements
-- Images inside the CW spoiler
-- fullwidth images
-- scaling options
-- Formatted toots
-- Highlighting of misleading links
-- Hiding follower count
-- An app settings modal
-- Collapsible toots
-- Colored toot visibility icons
-- Local-only toots
-- Threaded mode
-- data-* attributes on statuses for custom CSS targeting
-- Advanced theming via flavours+skins
-- Doodle
+- [Media improvements](https://glitch-soc.github.io/docs/features/media/)
+  - Images inside the CW spoiler
+  - fullwidth images
+  - scaling options
+- [Formatted toots](https://glitch-soc.github.io/docs/features/rich-text)
+- [Highlighting of misleading links](https://glitch-soc.github.io/docs/features/misleading-link-highlighting/)
+- [Hiding follower count](https://glitch-soc.github.io/docs/features/hide-follower-count/)
+- [An app settings modal](https://glitch-soc.github.io/docs/features/app-settings/)
+- [Collapsible toots](https://glitch-soc.github.io/docs/features/collapsible-toots/)
+- [Colored toot visibility icons](https://glitch-soc.github.io/docs/features/colored-visibility-icons/)
+- [Local-only toots](https://glitch-soc.github.io/docs/features/local-only-toots/)
+- [Threaded mode](https://glitch-soc.github.io/docs/features/threaded-mode/)
+- [data-* attributes on statuses](https://glitch-soc.github.io/docs/features/status-data-attributes/) for custom CSS targeting
+- [Advanced theming via flavours+skins](https://glitch-soc.github.io/docs/features/themes/)
+- [Doodle](https://glitch-soc.github.io/docs/features/doodle/)
 
 ## Catstodon - Differences from glitch-soc
 
