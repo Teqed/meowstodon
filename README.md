@@ -27,7 +27,8 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 
 ## Catstodon - Differences from glitch-soc
 
-- Emoji reactions on statuses (with both Unicode and custom emojis, same as for announcements).
+- Emoji reactions on statuses (with both Unicode and custom emojis, same as for announcements), a feature originally developed for [Nyastodon](https://git.bsd.gay/fef/nyastodon).
+  Ended up as a Catstodon-maintained patch after its initial two Pull Requests to glitch-soc, but was handed over to [Essem's fork, Chuckya](https://github.com/TheEssem/mastodon) and is now pending [its fourth attempt of merging into glitch-soc](https://github.com/glitch-soc/mastodon/pull/2462).
 - The web frontend emoji picker is a blobcat instead of the joy emoji.
 - The rate limits for authenticated users have been relaxed a bit.
 - The API endpoint `/api/v1/custom_emojis` is no longer affected by AUTHORIZED_FETCH, allowing anyone to copy custom emojis.
@@ -37,6 +38,7 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 - Some sound files are adjusted:
   - sounds/boop.mp3
   - sounds/boop.ogg
+- Lifts the "only federate local favourites" restriction on favourites/likes and emoji reactions.
 
 ## Meowstodon - Differences from Catstodon
 
@@ -46,3 +48,12 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 - The queries for trending statuses [have been changed](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/models/trends/statuses.rb) -- instead of using `recently_used_ids()` a selection of recent statuses from the last week are chosen.
 - When [calculating scores](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/models/trends/statuses.rb) for trends, set `allowed = true` for eligible statuses.
 - [Personal rel="me" headers](https://github.com/Teqed/meowstodon/blame/15b5e3eb79607ce1f01fb6ba0b16ebed5ab97a5b/app/views/layouts/application.html.haml) added for link verification of alt profiles. Currently hardcoded but in the future this might be provided by environment variable -- change these if forking.
+
+## Previous differences now merged into glitch-soc
+
+- Fixed incorrect upload size limit display when adding new a new custom emoji. ([Pull request](https://github.com/glitch-soc/mastodon/pull/1763))
+- Everything merged into vanilla Mastodon
+
+## Previous differences now merged into vanilla Mastodon
+
+- The period of retention of IP addresses and sessions was made configurable. ([Pull request](https://github.com/mastodon/mastodon/pull/18757))
