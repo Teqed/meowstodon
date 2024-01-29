@@ -66,9 +66,9 @@ class Trends::Statuses < Trends::Base
       calculate_scores(statuses, at_time)
     end
 
-    # Then, calculate scores for statuses that were used today. There are potentially some
+    # Then, calculate scores for statuses that were created today. There are potentially some
     # duplicate items here that we might process one more time, but that should be fine
-    Status.where(id: recently_used_ids(at_time)).includes(:status_stat, :account).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
+    Status.where('statuses.created_at >= ?', 1.day.ago).includes(:status_stat, :account).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
       calculate_scores(statuses, at_time)
     end
 
