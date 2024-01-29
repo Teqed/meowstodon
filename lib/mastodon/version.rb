@@ -25,11 +25,11 @@ module Mastodon
     end
 
     def meowstodon_revision
-      '1.0.0.1+nightly'
+      '1.0.14.1'
     end
 
     def build_metadata
-      ["glitch.cat.meow.#{meowstodon_revision}", ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
+      ["glitch+cat+meow+#{meowstodon_revision}", ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact_blank.join('.')
     end
 
     def to_a
