@@ -6,7 +6,7 @@ class Trends::Statuses < Trends::Base
   self.default_options = {
     threshold: 5,
     review_threshold: 3,
-    score_halflife: 2.hours.freeze,
+    score_halflife: 1.hour.freeze,
     decay_threshold: 0.3,
   }
 
@@ -59,7 +59,7 @@ class Trends::Statuses < Trends::Base
 
   def refresh(at_time = Time.now.utc)
     # statuses = Status.where(id: (recently_used_ids(at_time) + StatusTrend.pluck(:status_id)).uniq).includes(:status_stat, :account)
-    statuses = Status.where('statuses.created_at >= ?', 1.week.ago).order(created_at: :desc).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3)
+    statuses = Status.where('statuses.created_at >= ?', 1.day.ago).order(created_at: :desc).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3)
     calculate_scores(statuses, at_time)
   end
 
@@ -109,7 +109,7 @@ class Trends::Statuses < Trends::Base
       decaying_score = if score.zero? || !eligible?(status)
                          0
                        else
-                         score * (0.2**((at_time.to_f - status.created_at.to_f) / options[:score_halflife].to_f))
+                         score * (0.75**((at_time.to_f - status.created_at.to_f) / options[:score_halflife].to_f))
                        end
 
       [decaying_score, status]
