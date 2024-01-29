@@ -132,7 +132,7 @@ class Trends::Statuses < Trends::Base
     to_insert = items.filter { |(score, _)| score >= options[:decay_threshold] }
     to_delete = items.filter { |(score, _)| score < options[:decay_threshold] }
 
-    StatusTrend.upsert_all(to_insert.map { |(score, status)| { status_id: status.id, account_id: status.account_id, score: score, language: status.language, allowed: status.trendable? || false } }, unique_by: :status_id) if to_insert.any?
+    StatusTrend.upsert_all(to_insert.map { |(score, status)| { status_id: status.id, account_id: status.account_id, score: score, language: status.language, allowed: true } }, unique_by: :status_id) if to_insert.any?
     StatusTrend.where(status_id: to_delete.map { |(_, status)| status.id }).delete_all if to_delete.any?
   end
 end
