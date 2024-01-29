@@ -76,6 +76,7 @@ class Trends::Statuses < Trends::Base
 
     # Now that all trends have up-to-date scores, and all the ones below the threshold have
     # been removed, we can recalculate their positions
+    StatusTrend.connection.exec_update('UPDATE status_trends SET rank = t0.calculated_rank, allowed = true FROM (SELECT id, row_number() OVER w AS calculated_rank FROM status_trends WINDOW w AS (PARTITION BY language ORDER BY score DESC)) t0 WHERE status_trends.id = t0.id')
     StatusTrend.recalculate_ordered_rank
   end
 
