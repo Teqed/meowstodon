@@ -328,3 +328,4 @@ class OnboardingModal extends PureComponent {
 }
 
 export default connect(mapStateToProps)(injectIntl(OnboardingModal));
+
