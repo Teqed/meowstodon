@@ -222,14 +222,14 @@ export const Conversation = ({ conversation, scrollKey, onMoveUp, onMoveDown }) 
             </div>
           </div>
 
-            <StatusContent
-              status={lastStatus}
-              parseClick={this.parseClick}
-              expanded={isExpanded}
-              onExpandedToggle={this.handleShowMore}
-              collapsible
-              media={media}
-            />
+          <StatusContent
+            status={lastStatus}
+            parseClick={parseClick}
+            expanded={sharedCWState ? lastStatus.get('hidden') : expanded}
+            onExpandedToggle={handleShowMore}
+            collapsible
+            media={media}
+          />
 
           <div className='status__action-bar'>
             <IconButton className='status__action-bar-button' title={intl.formatMessage(messages.reply)} icon='reply' iconComponent={ReplyIcon} onClick={handleReply} />
