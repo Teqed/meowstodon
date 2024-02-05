@@ -17,15 +17,15 @@ module Mastodon
     end
 
     def default_prerelease
-      'alpha.0'
+      'alpha.1'
     end
 
     def prerelease
       ENV['MASTODON_VERSION_PRERELEASE'].presence || default_prerelease
     end
 
-    def meowstodon_revision
-      '1.0.14.1'
+    def catstodon_revision
+      '1.0.15'
     end
 
     def build_metadata
