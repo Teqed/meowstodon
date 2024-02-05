@@ -24,8 +24,8 @@ module Mastodon
       ENV['MASTODON_VERSION_PRERELEASE'].presence || default_prerelease
     end
 
-    def catstodon_revision
-      '1.0.15'
+    def meowstodon_revision
+      '1.0.15.1'
     end
 
     def build_metadata
