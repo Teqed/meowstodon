@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def meowstodon_revision
-      '1.0.14.1'
+      '1.0.15.1'
     end
 
     def build_metadata
