@@ -487,12 +487,18 @@ const startServer = async () => {
     const accessToken   = location.query.access_token || req.headers['sec-websocket-protocol'];
 
     if (!authorization && !accessToken) {
-      const err = new Error('Missing access token');
-      // @ts-ignore
-      err.status = 401;
+      if (!process.env.UNAUTHENTICATED_STREAMING_API) {
+        const err = new Error('Missing access token');
+        // @ts-ignore
+        err.status = 401;
 
-      reject(err);
-      return;
+        reject(err);
+        return;
+      } else {
+        // @ts-ignore
+        resolve();
+        return;
+      }
     }
 
     const token = authorization ? authorization.replace(/^Bearer /, '') : accessToken;
