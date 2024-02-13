@@ -112,7 +112,7 @@ class Trends::Statuses < Trends::Base
   def calculate_scores(statuses, at_time)
     items = statuses.map do |status|
       expected  = 1.0
-      observed  = (status.reblogs_count + status.favourites_count).to_f
+      observed  = (status.replies_count + status.reblogs_count + status.favourites_count).to_f
 
       score = if expected > observed || observed < options[:threshold]
                 0
