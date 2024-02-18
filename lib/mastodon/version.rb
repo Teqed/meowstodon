@@ -17,7 +17,7 @@ module Mastodon
     end
 
     def default_prerelease
-      'alpha.1'
+      'alpha.3'
     end
 
     def prerelease
@@ -25,7 +25,7 @@ module Mastodon
     end
 
     def meowstodon_revision
-      '1.0.15.1'
+      '1.0.2.1'
     end
 
     def build_metadata
