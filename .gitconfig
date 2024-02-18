@@ -1,0 +1,6 @@
+merge.conflictstyle diff3
+rebase.autosquash true
+rebase.autostash true
+rerere.enabled true
+core.pager delta
+diff.algorithm histogram
