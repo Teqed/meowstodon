@@ -6,6 +6,16 @@ import { reduceMotion } from '../initial_state';
 
 import { ShortNumber } from './short_number';
 
+const obfuscatedCount = (count: number) => {
+  if (count < 0) {
+    return 0;
+  } else {
+    return (
+      <ShortNumber value={count} />
+    );
+  }
+};
+
 interface Props {
   value: number;
 }
@@ -48,8 +58,9 @@ export const AnimatedNumber: React.FC<Props> = ({ value }) => {
             <span
               key={key}
               style={{
-                position: direction * style.y > 0 ? 'absolute' : 'static',
-                transform: `translateY(${style.y * 100}%)`,
+                position:
+                  direction * (style.y ?? 0) > 0 ? 'absolute' : 'static',
+                transform: `translateY(${(style.y ?? 0) * 100}%)`,
               }}
             >
               <ShortNumber value={data as number} />

@@ -27,18 +27,35 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 
 ## Catstodon - Differences from glitch-soc
 
-- Emoji reactions on statuses (with both Unicode and custom emojis, same as for announcements), a feature originally developed for [Nyastodon](https://git.bsd.gay/fef/nyastodon).
-  Ended up as a Catstodon-maintained patch after its initial two Pull Requests to glitch-soc, but was handed over to [Essem's fork, Chuckya](https://github.com/TheEssem/mastodon) and is now pending [its fourth attempt of merging into glitch-soc](https://github.com/glitch-soc/mastodon/pull/2462).
+- Emoji reactions on statuses (with both Unicode and custom emojis, same as for announcements).
 - The web frontend emoji picker is a blobcat instead of the joy emoji.
 - The rate limits for authenticated users have been relaxed a bit.
-- The API endpoint `/api/v1/custom_emojis` is no longer affected by AUTHORIZED_FETCH, allowing anyone to copy custom emojis.
-- Allow higher resolution images. (4096x4096 instead of the previous limit of 1920x1080)
+- The API endpoint `/api/v1/custom_emojis` is no longer affected by AUTHORIZED_FETCH, allowing anyone to copy custom
+  emojis.
+- Allow higher resolution images. (4096x4096 instead of the previous limit of 3840x2160)
 - Allow posting polls with only one poll option (if `MIN_POLL_OPTIONS` is set to 1 on your instance).
 - Added oatstodon flavour (by [@oat@hellsite.site](https://hellsite.site/@oat))
 - Some sound files are adjusted:
   - sounds/boop.mp3
   - sounds/boop.ogg
+- Emoji reactions on statuses (with both Unicode and custom emojis, same as for announcements), a feature originally
+  developed for [Nyastodon](https://git.bsd.gay/fef/nyastodon).
+  Ended up as a Catstodon-maintained patch after its initial two Pull Requests to glitch-soc, but was handed over
+  to [Essem's fork, Chuckya](https://github.com/TheEssem/mastodon) and is now
+  pending [its fourth attempt of merging into glitch-soc](https://github.com/glitch-soc/mastodon/pull/2462).
 - Lifts the "only federate local favourites" restriction on favourites/likes and emoji reactions.
+- Cherry-picks the
+  [activity filter branch](https://github.com/chikorita157/mastodon-sakura/tree/newmain-tmp3-noellabo-filtering)
+  from [Sakurajima Mastodon](https://github.com/chikorita157/mastodon-sakura).
+- Adds the ability to disable the suspicious sign in detection entirely.
+  - Useful for situations where the instance may not have up-to-date IP information, such as when the period of IP
+    address retention is set to a low value (see _Previous differences now merged into vanilla Mastodon_)
+- Environment variable `MASTODON_USE_LIBVIPS` is true by default.
+  - This is a minor change, but it _requires_ all systems running Catstodon to run a recent libvips version (8.13+).
+  - Vanilla Mastodon intends to deprecate ImageMagick anyway, so sooner or later, this change will cease being one.
+- Allow dashes in emoji shortcodes
+  - This is simply to allow custom emoji compat with other fedi software.
+  - Original patch by hazycora: https://github.com/TheEssem/mastodon/commit/2dde7a25a47a23f827e2fd2d07f55438f9985181
 
 ## Meowstodon - Differences from Catstodon
 
@@ -51,9 +68,11 @@ The following is an excerpt from [glitch-soc's documentation](https://glitch-soc
 
 ## Previous differences now merged into glitch-soc
 
-- Fixed incorrect upload size limit display when adding new a new custom emoji. ([Pull request](https://github.com/glitch-soc/mastodon/pull/1763))
+- Fixed incorrect upload size limit display when adding new a new custom
+  emoji. ([Pull request](https://github.com/glitch-soc/mastodon/pull/1763))
 - Everything merged into vanilla Mastodon
 
 ## Previous differences now merged into vanilla Mastodon
 
-- The period of retention of IP addresses and sessions was made configurable. ([Pull request](https://github.com/mastodon/mastodon/pull/18757))
+- The period of retention of IP addresses and sessions was made
+  configurable. ([Pull request](https://github.com/mastodon/mastodon/pull/18757))

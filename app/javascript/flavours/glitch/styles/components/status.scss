@@ -67,14 +67,97 @@
     margin: -3px 0 0;
   }
 
-  p,
-  pre {
+  p, pre, blockquote {
     margin-bottom: 20px;
     white-space: pre-wrap;
     unicode-bidi: plaintext;
 
     &:last-child {
       margin-bottom: 0;
+    }
+  }
+
+  .status__content__text,
+  .e-content {
+    overflow: visible;
+
+    .emojione {
+      transition-property: transform, filter;
+      transition-duration:0.08s;
+    }
+
+    .emojione:hover {
+      transform: scale(1.8);
+      filter: drop-shadow(0 0 3px #0c0c0c);
+      z-index:99;
+    }
+
+    & > ul,
+    & > ol {
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3, h4, h5 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      font-size: 1.2em;
+    }
+
+    h2 {
+      font-size: 1.1em;
+    }
+
+    h3, h4, h5 {
+      font-weight: 500;
+    }
+
+    blockquote {
+      padding-left: 10px;
+      border-left: 3px solid $darker-text-color;
+      color: $darker-text-color;
+      white-space: normal;
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    b, strong {
+      font-weight: 700;
+    }
+
+    em, i {
+      font-style: italic;
+    }
+
+    sub {
+      font-size: smaller;
+      vertical-align: sub;
+    }
+
+    sup {
+      font-size: smaller;
+      vertical-align: super;
+    }
+
+    ul, ol {
+      margin-left: 2em;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
     }
   }
 
@@ -85,6 +168,10 @@
 
     &:hover {
       text-decoration: underline;
+
+      .fa {
+        color: lighten($dark-text-color, 7%);
+      }
     }
 
     &.mention {
@@ -95,6 +182,10 @@
           text-decoration: underline;
         }
       }
+    }
+
+    .fa {
+      color: $dark-text-color;
     }
   }
 
@@ -136,7 +227,7 @@
 }
 
 .status__content__spoiler-link {
-  display: inline-flex;
+  display: inline-block;
   border-radius: 2px;
   background: lighten($ui-base-color, 30%);
   border: 0;
@@ -148,7 +239,6 @@
   line-height: inherit;
   cursor: pointer;
   vertical-align: top;
-  align-items: center;
 
   &:hover {
     background: lighten($ui-base-color, 33%);
@@ -157,19 +247,19 @@
 
   .status__content__spoiler-icon {
     display: inline-block;
-    margin-inline-start: 5px;
-    border-inline-start: 1px solid currentColor;
-    padding: 0;
-    padding-inline-start: 4px;
-    width: 16px;
-    height: 16px;
+    margin: 0 0 0 5px;
+    border-left: 1px solid currentColor;
+    padding: 0 0 0 4px;
+    font-size: 16px;
+    vertical-align: -2px;
   }
 }
 
 .notif-cleaning {
   .status,
-  .notification {
-    padding-inline-end: ($dismiss-overlay-width + 0.5rem);
+  .notification-follow,
+  .notification-follow-request {
+    padding-right: ($dismiss-overlay-width + 0.5rem);
   }
 }
 
@@ -188,7 +278,7 @@
 }
 
 .status__prepend-icon-wrapper {
-  inset-inline-start: -26px;
+  left: -26px;
   position: absolute;
 }
 
@@ -210,7 +300,7 @@
     background: lighten($ui-base-color, 4%);
 
     &.status.status-direct {
-      background: mix(lighten($ui-base-color, 4%), $ui-highlight-color, 95%);
+      background: lighten($ui-base-color, 12%);
 
       &.muted {
         background: transparent;
@@ -234,17 +324,12 @@
   @supports (-ms-overflow-style: -ms-autohiding-scrollbar) {
     // Add margin to avoid Edge auto-hiding scrollbar appearing over content.
     // On Edge 16 this is 16px and Edge <=15 it's 12px, so aim for 16px.
-    padding-inline-end: 28px; // 12px + 16px
+    padding-right: 28px; // 12px + 16px
   }
 
   @keyframes fade {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
   }
 
   opacity: 1;
@@ -256,7 +341,7 @@
   }
 
   &.status-direct {
-    background: mix($ui-base-color, $ui-highlight-color, 95%);
+    background: lighten($ui-base-color, 8%);
     border-bottom-color: lighten($ui-base-color, 12%);
   }
 
@@ -303,18 +388,13 @@
     &.has-background::before {
       display: block;
       position: absolute;
-      inset-inline-start: 0;
-      inset-inline-end: 0;
+      left: 0;
+      right: 0;
       top: 0;
       bottom: 0;
-      background-image: linear-gradient(
-        to bottom,
-        rgba($base-shadow-color, 0.75),
-        rgba($base-shadow-color, 0.65) 24px,
-        rgba($base-shadow-color, 0.8)
-      );
+      background-image: linear-gradient(to bottom, rgba($base-shadow-color, .75), rgba($base-shadow-color, .65) 24px, rgba($base-shadow-color, .8));
       pointer-events: none;
-      content: '';
+      content: "";
     }
 
     .display-name:hover .display-name__html {
@@ -322,45 +402,59 @@
     }
 
     .status__content {
-      height: 20px;
+      max-height: 60px;
+      min-height: 22px;
       overflow: hidden;
       text-overflow: ellipsis;
       padding-top: 0;
 
-      &::after {
-        content: '';
+      &:after {
+        content: "";
         position: absolute;
         top: 0;
         bottom: 0;
-        inset-inline-start: 0;
-        inset-inline-end: 0;
-        background: linear-gradient(
-          rgba($ui-base-color, 0),
-          rgba($ui-base-color, 1)
-        );
+        left: 0;
+        right: 0;
+        background: linear-gradient(rgba($ui-base-color, 0), rgba($ui-base-color, 1));
         pointer-events: none;
+      }
+      
+      .media-gallery {
+        display: none;
       }
 
       a:hover {
         text-decoration: none;
       }
     }
-
-    &:focus > .status__content::after {
-      background: linear-gradient(
-        rgba(lighten($ui-base-color, 4%), 0),
-        rgba(lighten($ui-base-color, 4%), 1)
-      );
+    &:focus > .status__content:after {
+      background: linear-gradient(rgba(lighten($ui-base-color, 4%), 0), rgba(lighten($ui-base-color, 4%), 1));
+    }
+    &.status-direct > .status__content:after {
+      background: linear-gradient(rgba(lighten($ui-base-color, 8%), 0), rgba(lighten($ui-base-color, 8%), 1));
     }
 
-    &.status-direct > .status__content::after {
-      background: linear-gradient(
-        rgba(mix($ui-base-color, $ui-highlight-color, 95%), 0),
-        rgba(mix($ui-base-color, $ui-highlight-color, 95%), 1)
-      );
+    &.status-direct .status__collapse-button {
+      background-image: linear-gradient(rgba(lighten($ui-base-color, 12%), 255) 0 0);
+    
+      &:active,
+      &:hover,
+      &:focus {
+        background-image: linear-gradient(rgba(lighten($ui-base-color, 20%), 255) 0 0);
+      }
+    }
+					  
+    .status__collapse-button {
+      background-image: linear-gradient(rgba(lighten($ui-base-color, 4%), 255) 0 0);
+
+      &:active,
+      &:hover,
+      &:focus {
+        background-image: linear-gradient(rgba(lighten($ui-base-color, 12%), 255) 0 0);
+      }
     }
 
-    .notification__message {
+    notification__message {
       margin-bottom: 0;
     }
 
@@ -370,11 +464,7 @@
   }
 
   .notification__message {
-    margin: -10px 0 10px;
-  }
-
-  .reactions-bar--empty {
-    display: none;
+    margin: -10px 0px 10px 0;
   }
 }
 
@@ -392,7 +482,7 @@
   display: inline-block;
   color: $dark-text-color;
   font-size: 14px;
-  text-align: end;
+  text-align: right;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -433,29 +523,24 @@
   .status__visibility-icon,
   .status__reply-icon,
   .text-icon {
-    padding-inline-start: 2px;
-    padding-inline-end: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
 
-  & > .icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .status__collapse-button.active > .icon {
+  .status__collapse-button.active > .fa-angle-double-up {
     transform: rotate(-180deg);
   }
 }
 
 .no-reduce-motion .status__collapse-button {
   &.activate {
-    & > .icon {
+    & > .fa-angle-double-up {
       animation: spring-flip-in 1s linear;
     }
   }
 
   &.deactivate {
-    & > .icon {
+    & > .fa-angle-double-up {
       animation: spring-flip-out 1s linear;
     }
   }
@@ -505,7 +590,7 @@
 .status__prepend {
   margin-top: -2px;
   margin-bottom: 8px;
-  margin-inline-start: 58px;
+  margin-left: 58px;
   color: $dark-text-color;
   font-size: 14px;
   position: relative;
@@ -525,21 +610,13 @@
   align-items: center;
   display: flex;
   margin-top: 8px;
-
-  & > .emoji-picker-dropdown > .emoji-button {
-    padding: 0;
-  }
 }
 
 .status__action-bar-button {
-  margin-inline-end: 18px;
+  margin-right: 18px;
 
   &.icon-button--with-counter {
-    margin-inline-end: 14px;
-  }
-
-  .fa-plus {
-    padding-top: 1px;
+    margin-right: 14px;
   }
 }
 
@@ -563,7 +640,6 @@
 .detailed-status {
   background: lighten($ui-base-color, 4%);
   padding: 14px 10px;
-  border-top: 1px solid lighten($ui-base-color, 8%);
 
   &--flex {
     display: flex;
@@ -599,12 +675,6 @@
   color: $dark-text-color;
   font-size: 14px;
   line-height: 18px;
-
-  .icon {
-    width: 15px;
-    height: 15px;
-    vertical-align: middle;
-  }
 }
 
 .detailed-status__action-bar {
@@ -614,31 +684,20 @@
   display: flex;
   flex-direction: row;
   padding: 10px 0;
-
-  .fa-plus {
-    padding-top: 2px;
-  }
 }
 
 .detailed-status__link {
-  display: inline-flex;
-  align-items: center;
   color: inherit;
   text-decoration: none;
-  gap: 6px;
-  position: relative;
-  top: 0.145em;
-
-  .icon {
-    top: 0;
-  }
 }
 
 .detailed-status__favorites,
 .detailed-status__reblogs {
+  display: inline-block;
   font-weight: 500;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 17px;
+  margin-left: 6px;
 }
 
 .status__display-name,
@@ -652,7 +711,7 @@
 
 .status__display-name,
 .account__display-name {
-  .display-name strong {
+  strong {
     color: $primary-text-color;
   }
 }
@@ -667,12 +726,12 @@ a.status__display-name,
 .reply-indicator__display-name,
 .detailed-status__display-name,
 .account__display-name {
-  &:hover .display-name strong {
+  &:hover strong {
     text-decoration: underline;
   }
 }
 
-.account__display-name .display-name strong {
+.account__display-name strong {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -681,6 +740,10 @@ a.status__display-name,
 .detailed-status__application,
 .detailed-status__datetime {
   color: inherit;
+}
+
+.detailed-status .button.logo-button {
+  margin-bottom: 15px;
 }
 
 .detailed-status__display-name {
@@ -705,12 +768,14 @@ a.status__display-name,
 
 .detailed-status__display-avatar {
   float: left;
-  margin-inline-end: 10px;
+  margin-right: 10px;
 }
 
 .status__avatar {
   flex: none;
-  margin-inline-end: 10px;
+  margin: 0 10px 0 0;
+  height: 48px;
+  width: 48px;
 }
 
 .muted {
@@ -761,9 +826,9 @@ a.status__display-name,
 
   &__actions {
     bottom: 0;
-    inset-inline-start: 0;
+    left: 0;
     position: absolute;
-    inset-inline-end: 0;
+    right: 0;
     top: 0;
     display: flex;
     justify-content: center;
@@ -803,8 +868,7 @@ a.status__display-name,
       bottom: -1px;
     }
 
-    a .fa,
-    a:hover .fa {
+    a .fa, a:hover .fa {
       color: inherit;
     }
   }
@@ -822,16 +886,12 @@ a.status-card {
   cursor: zoom-in;
   display: block;
   text-decoration: none;
-  width: 100%;
-  height: auto;
-  margin: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
 }
 
 .status-card-video {
-  // Firefox has a bug where frameborder=0 iframes add some extra blank space
-  // see https://bugzilla.mozilla.org/show_bug.cgi?id=155174
-  overflow: hidden;
-
   iframe {
     width: 100%;
     height: 100%;
@@ -852,16 +912,11 @@ a.status-card {
 .status-card__content {
   flex: 1 1 auto;
   overflow: hidden;
-  padding: 14px;
-  padding-inline-start: 8px;
+  padding: 14px 14px 14px 8px;
 }
 
 .status-card__description {
   color: $darker-text-color;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .status-card__host {
@@ -878,13 +933,12 @@ a.status-card {
   background: lighten($ui-base-color, 8%);
   position: relative;
 
-  & > .icon {
-    width: 18px;
-    height: 18px;
+  & > .fa {
+    font-size: 21px;
     position: absolute;
     transform-origin: 50% 50%;
     top: 50%;
-    inset-inline-start: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
   }
 }
@@ -951,7 +1005,7 @@ a.status-card.compact:hover {
   object-fit: fill;
   position: absolute;
   top: 0;
-  inset-inline-start: 0;
+  left: 0;
   z-index: 0;
   background: $base-overlay-background;
 
@@ -973,18 +1027,22 @@ a.status-card.compact:hover {
     color: $dark-text-color;
     padding: 8px 18px;
     cursor: default;
-    border-inline-end: 1px solid lighten($ui-base-color, 8%);
+    border-right: 1px solid lighten($ui-base-color, 8%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 26px;
+
+    .fa {
+      display: block;
+    }
   }
 
   &__list {
     list-style: none;
     padding: 4px 0;
-    padding-inline-start: 8px;
+    padding-left: 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1014,9 +1072,8 @@ a.status-card.compact:hover {
       display: block;
     }
 
-    .icon {
+    .fa {
       color: $dark-text-color;
-      vertical-align: middle;
     }
   }
 }
@@ -1042,63 +1099,15 @@ a.status-card.compact:hover {
 
   &.unread {
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
-      inset-inline-start: 0;
+      left: 0;
+      pointer-events: 0;
       width: 100%;
       height: 100%;
-      border-inline-start: 4px solid $highlight-text-color;
+      border-left: 4px solid $highlight-text-color;
       pointer-events: none;
-    }
-  }
-
-  &--in-thread {
-    border-bottom: 0;
-
-    .status__content,
-    .status__action-bar,
-    .reactions-bar {
-      margin-inline-start: 46px + 10px;
-      width: calc(100% - (46px + 10px));
-    }
-  }
-
-  &--first-in-thread {
-    border-top: 1px solid lighten($ui-base-color, 8%);
-  }
-
-  &__line {
-    height: 10px - 4px;
-    border-inline-start: 2px solid lighten($ui-base-color, 8%);
-    width: 0;
-    position: absolute;
-    top: 0;
-    inset-inline-start: 14px + ((46px - 2px) * 0.5);
-
-    &--full {
-      top: 0;
-      height: 100%;
-
-      &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 10px - 4px;
-        height: 46px + 4px + 4px;
-        width: 2px;
-        background: $ui-base-color;
-        inset-inline-start: -2px;
-      }
-    }
-
-    &--first {
-      top: 10px + 46px + 4px;
-      height: calc(100% - (10px + 46px + 4px));
-
-      &::before {
-        display: none;
-      }
     }
   }
 }
@@ -1106,12 +1115,12 @@ a.status-card.compact:hover {
 .picture-in-picture {
   position: fixed;
   bottom: 20px;
-  inset-inline-end: 20px;
+  right: 20px;
   width: 300px;
 
   &.left {
-    inset-inline-end: unset;
-    inset-inline-start: 20px;
+    right: unset;
+    left: 20px;
   }
 
   &__footer {
@@ -1137,7 +1146,7 @@ a.status-card.compact:hover {
     }
 
     .account__avatar {
-      margin-inline-end: 10px;
+      margin-right: 10px;
     }
 
     .display-name {
@@ -1176,11 +1185,11 @@ a.status-card.compact:hover {
   font-weight: 500;
   cursor: pointer;
   color: $darker-text-color;
-  aspect-ratio: 16 / 9;
 
-  .icon {
-    width: 24px;
-    height: 24px;
+  i {
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
     margin-bottom: 10px;
   }
 
@@ -1188,32 +1197,5 @@ a.status-card.compact:hover {
   &:focus,
   &:active {
     border-color: lighten($ui-base-color, 12%);
-  }
-}
-
-.hashtag-bar {
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  font-size: 14px;
-  line-height: 18px;
-  gap: 4px;
-  color: $darker-text-color;
-
-  a {
-    display: inline-flex;
-    color: inherit;
-    text-decoration: none;
-
-    &:hover span {
-      text-decoration: underline;
-    }
-  }
-
-  .link-button {
-    color: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    padding: 0;
   }
 }
