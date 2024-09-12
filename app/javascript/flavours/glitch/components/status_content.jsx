@@ -343,6 +343,7 @@ class StatusContent extends PureComponent {
       rewriteMentions,
       intl,
       statusContent,
+      zoomEmojisOnHover,
     } = this.props;
 
     const hidden = this.props.onExpandedToggle ? !this.props.expanded : this.state.hidden;
@@ -356,7 +357,12 @@ class StatusContent extends PureComponent {
     const classNames = classnames('status__content', {
       'status__content--with-action': parseClick && !disabled,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
+      'status__content--zoom-emojis-on-hover': zoomEmojisOnHover,
     });
+    const textClassNames = classnames('status__content__text translate', {
+      'status__content--zoom-emojis-on-hover': zoomEmojisOnHover,
+    });
+
 
     const translateButton = renderTranslate && (
       <TranslateButton onClick={this.handleTranslate} translation={status.get('translation')} />
@@ -441,7 +447,7 @@ class StatusContent extends PureComponent {
               key={`contents-${tagLinks}`}
               tabIndex={!hidden ? 0 : null}
               dangerouslySetInnerHTML={content}
-              className='status__content__text translate'
+              className={textClassNames}
               onMouseEnter={this.handleMouseEnter}
               onMouseLeave={this.handleMouseLeave}
               lang={language}
@@ -485,7 +491,7 @@ class StatusContent extends PureComponent {
           <div
             ref={this.setContentsRef}
             key={`contents-${tagLinks}`}
-            className='status__content__text translate'
+            className={textClassNames}
             dangerouslySetInnerHTML={content}
             tabIndex={0}
             onMouseEnter={this.handleMouseEnter}
