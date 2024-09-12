@@ -61,16 +61,20 @@ class Rack::Attack
       params['page'].present? || params['min_id'].present? || params['max_id'].present? || params['since_id'].present?
     end
   end
+  
+  Rack::Attack.safelist('allow from localhost') do |req|
+    req.remote_ip == '127.0.0.1' || req.remote_ip == '::1'
+  end
 
   Rack::Attack.blocklist('deny from blocklist') do |req|
     IpBlock.blocked?(req.remote_ip)
   end
 
-  throttle('throttle_authenticated_api', limit: 1_500, period: 5.minutes) do |req|
+  throttle('throttle_authenticated_api', limit: 5_000, period: 1.minutes) do |req|
     req.authenticated_user_id if req.api_request?
   end
 
-  throttle('throttle_per_token_api', limit: 300, period: 5.minutes) do |req|
+  throttle('throttle_per_token_api', limit: 1_500, period: 1.minutes) do |req|
     req.authenticated_token_id if req.api_request?
   end
 
