@@ -59,9 +59,7 @@ class ActivityPub::FetchRemoteStatusService < BaseService
 
   def trustworthy_attribution?(uri, attributed_to)
     return false if uri.nil? || attributed_to.nil?
-    return true if
-      ActivityPub::TagManager.instance.local_uri?(uri)
-    end
+    return true if ActivityPub::TagManager.instance.local_uri?(uri)
     Addressable::URI.parse(uri).normalized_host.casecmp(Addressable::URI.parse(attributed_to).normalized_host).zero?
   end
 
