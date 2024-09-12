@@ -174,29 +174,17 @@ class Footer extends ImmutablePureComponent {
     }
 
     let replyButton = null;
-    if (showReplyCount) {
-      replyButton = (
-        <IconButton
-          className='status__action-bar-button'
-          title={replyTitle}
-          icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
-          iconComponent={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? ReplyIcon : replyIconComponent}
-          onClick={this.handleReplyClick}
-          counter={status.get('replies_count')}
-          obfuscateCount
-        />
-      );
-    } else {
-      replyButton = (
-        <IconButton
-          className='status__action-bar-button'
-          title={replyTitle}
-          icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
-          iconComponent={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? ReplyIcon : replyIconComponent}
-          onClick={this.handleReplyClick}
-        />
-      );
-    }
+    replyButton = (
+      <IconButton
+        className='status__action-bar-button'
+        title={replyTitle}
+        icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
+        iconComponent={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? ReplyIcon : replyIconComponent}
+        onClick={this.handleReplyClick}
+        counter={status.get('replies_count')}
+        obfuscateCount
+      />
+    );
 
     return (
       <div className='picture-in-picture__footer'>
