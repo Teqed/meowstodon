@@ -62,26 +62,25 @@ class Trends::Statuses < Trends::Base
   def refresh(at_time = Time.now.utc)
     # First, recalculate scores for statuses that were trending previously. We split the queries
     # to avoid having to load all of the IDs into Ruby just to send them back into Postgres
-    # Original: Status.where(id: StatusTrend.select(:status_id)).includes(:status_stat, :account).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
+    Status.where(id: StatusTrend.select(:status_id))                              .includes(:status_stat, :account)                                                                                                       .reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
     Status.where('statuses.created_at >= ?', 8.hours.ago).order(created_at: :desc).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
       calculate_scores(statuses, at_time)
     end
 
     # Then, calculate scores for statuses that were used today. There are potentially some
     # duplicate items here that we might process one more time, but that should be fine
-    # Original: Status.where(id: recently_used_ids(at_time)).includes(:status_stat, :account).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
+    Status.where(id: recently_used_ids(at_time))                                  .includes(:status_stat, :account)                                                                                                       .reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
     Status.where('statuses.created_at >= ?', 8.hours.ago).order(created_at: :desc).includes(:status_stat, :account).joins(:status_stat).where('status_stats.reblogs_count > ? OR status_stats.favourites_count > ?', 3, 3).reorder(nil).find_in_batches(batch_size: BATCH_SIZE) do |statuses|
       calculate_scores(statuses, at_time)
     end
 
     # Now that all trends have up-to-date scores, and all the ones below the threshold have
     # been removed, we can recalculate their positions
-    StatusTrend.connection.exec_update('UPDATE status_trends SET rank = t0.calculated_rank, allowed = true FROM (SELECT id, row_number() OVER w AS calculated_rank FROM status_trends WINDOW w AS (PARTITION BY language ORDER BY score DESC)) t0 WHERE status_trends.id = t0.id')
     StatusTrend.recalculate_ordered_rank
   end
 
   def request_review
-    StatusTrend.pluck('distinct language').flat_map do |language|
+    StatusTrend.locales.flat_map do |language|
       score_at_threshold = StatusTrend.where(language: language, allowed: true).by_rank.ranked_below(options[:review_threshold]).first&.score || 0
       status_trends      = StatusTrend.where(language: language, allowed: false).joins(:status).includes(status: :account)
 
@@ -109,7 +108,7 @@ class Trends::Statuses < Trends::Base
   private
 
   def eligible?(status)
-    status.public_visibility? && status.account.discoverable? && !status.account.silenced? && !status.account.sensitized? && (status.spoiler_text.blank? || Setting.trending_status_cw) && !status.sensitive? && !status.reply? && valid_locale?(status.language)
+    status.created_at.past? && status.public_visibility? && status.account.discoverable? && !status.account.silenced? && !status.account.sensitized? && (status.spoiler_text.blank? || Setting.trending_status_cw) && !status.sensitive? && !status.reply? && valid_locale?(status.language)
   end
 
   def calculate_scores(statuses, at_time)
@@ -126,7 +125,7 @@ class Trends::Statuses < Trends::Base
       decaying_score = if score.zero? || !eligible?(status)
                          0
                        else
-                         score * (0.25**((at_time.to_f - status.created_at.to_f) / options[:score_halflife].to_f))
+                         score * (0.5**((at_time.to_f - status.created_at.to_f) / options[:score_halflife].to_f))
                        end
 
       [decaying_score, status]
@@ -135,9 +134,10 @@ class Trends::Statuses < Trends::Base
     to_insert = items.filter { |(score, _)| score >= options[:decay_threshold] }
     to_delete = items.filter { |(score, _)| score < options[:decay_threshold] }
 
+    StatusTrend.upsert_all(to_insert.map { |(score, status)| { status_id: status.id, account_id: status.account_id, score: score, language: status.language, allowed: true } }, unique_by: :status_id) if to_insert.any?
+    StatusTrend.where(status_id: to_delete.map { |(_, status)| status.id }).delete_all if to_delete.any?
+
     StatusTrend.transaction do
-      StatusTrend.upsert_all(to_insert.map { |(score, status)| { status_id: status.id, account_id: status.account_id, score: score, language: status.language, allowed: true } }, unique_by: :status_id) if to_insert.any?
-      StatusTrend.where(status_id: to_delete.map { |(_, status)| status.id }).delete_all if to_delete.any?
       StatusTrend.connection.exec_update('UPDATE status_trends SET rank = t0.calculated_rank, allowed = true FROM (SELECT id, row_number() OVER w AS calculated_rank FROM status_trends WINDOW w AS (PARTITION BY language ORDER BY score DESC)) t0 WHERE status_trends.id = t0.id')
     end
   end
